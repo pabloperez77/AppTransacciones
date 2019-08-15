@@ -1,13 +1,22 @@
+const User = require('../models/User');
+
 const usersCtrl = {};
 
-usersCtrl.getUsers = (req, res) => res.json({message: []});
+usersCtrl.getUsers = async (req, res) => {
+    const users = await User.find();
+    res.json(users)
+}
 
-usersCtrl.createUsers = (req, res) => res.json({message: 'User Saved'});
+usersCtrl.createUsers = async (req, res) => {
+    const { username } = req.body;
+    const newUser = new User({username});
+    await newUser.save();
+    res.json('User Created')
+}
 
-usersCtrl.getUser = (req, res) => res.json({title: 'wnfj job'});
-
-usersCtrl.updateUsers = (req, res) => res.json({message: 'User Updated'});
-
-usersCtrl.deleteUsers = (req, res) => res.json({message: 'User Deleted'});
+usersCtrl.deleteUsers = async (req, res) => {
+    await User.findByIdAndDelete(req.params.id);
+    res.json('User Deleted')
+}
 
 module.exports = usersCtrl;

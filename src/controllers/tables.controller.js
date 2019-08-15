@@ -1,13 +1,49 @@
+const Table = require('../models/Table');
+
 const notesCtrl = {};
 
-notesCtrl.getTables = (req, res) => res.json({message: []});
 
-notesCtrl.createTables = (req, res) => res.json({message: 'Table Saved'});
+notesCtrl.getTables = async (req, res) => {
+    const tables = await Table.find();
+    res.json({tables})
+}
 
-notesCtrl.getTable = (req, res) => res.json({title: 'wnfj job'});
+notesCtrl.createTables = async (req, res) => {
+    const{ title, concept, users, content, author, date } = req.body;
+    const newTable = new Table({
+        title,
+        concept,
+        users,
+        content,
+        author,
+        date
 
-notesCtrl.updateTables = (req, res) => res.json({message: 'Table Updated'});
+    });
+    await newTable.save();
+    res.json({message: 'Table Saved'})
+}
 
-notesCtrl.deleteTables = (req, res) => res.json({message: 'Table Deleted'});
+notesCtrl.getTable = async (req, res) => {
+    const table = await Table.findById( req.params.id );
+    console.log(table)
+    res.json(table)
+}
+
+notesCtrl.updateTables = async (req, res) => {
+    const { title, concept, users, content, author } = req.body;
+     await Table.findByIdAndUpdate( req.params.id  , {
+        title,
+        concept,
+        users,
+        content,
+        author
+    })
+     res.json({message: 'Table Updated'})
+}
+
+notesCtrl.deleteTables = async (req, res) => {
+    await Table.findByIdAndDelete(req.params.id);
+    res.json({message: 'Table Deleted'})
+}
 
 module.exports = notesCtrl;

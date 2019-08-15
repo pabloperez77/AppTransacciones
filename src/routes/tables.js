@@ -1,7 +1,7 @@
 const {Router} = require('express');
 const router = Router();
 
-const {getTables, createTables, getTable, updateTables, deleteTables} = require('../controllers/tables.controller');
+const { getTables, createTables, getTable, updateTables, deleteTables } = require('../controllers/tables.controller');
 
 router.route('/')
     .get(getTables)
